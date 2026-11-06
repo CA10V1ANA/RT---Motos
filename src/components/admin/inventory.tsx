@@ -11,7 +11,11 @@ import { custoTotal, lucroMoto, margemMoto } from "@/lib/finance";
 import { formatarMoeda, formatarPercentual } from "@/lib/format";
 import { Button } from "../ui/button";
 import { Input } from "../ui/primitives";
-import { ResponsivePanel, useMobile } from "../ui/responsive-panel";
+import {
+  ResponsivePanel,
+  TABLET_DOWN_QUERY,
+  useMobile,
+} from "../ui/responsive-panel";
 import { MotoStatus } from "../public/moto-card";
 import { MotoImage } from "../public/moto-image";
 import { Inspector } from "./inspector";
@@ -50,7 +54,9 @@ export function Inventory() {
   const [busca, setBusca] = useState("");
   const [selected, setSelected] = useState<string | null>(null);
   const [sale, setSale] = useState<Moto | null>(null);
-  const mobile = useMobile();
+  // Abaixo de 1024px o inspetor lateral não cabe ao lado da lista e acabava
+  // aparecendo lá no fim da página; por isso usamos o painel (drawer/modal).
+  const mobile = useMobile(TABLET_DOWN_QUERY);
   const reduced = useReducedMotion();
   const moto = motos.find((m) => m.id === selected);
   const lista = motos.filter(
