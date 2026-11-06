@@ -1,0 +1,23 @@
+[
+  { "fotoRecebida": 1, "arquivo": "/motos/RT-020/0.jpg", "associacao": "RT-020 — Honda CG 160 Fan preta (Lateral)" },
+  { "fotoRecebida": 2, "arquivo": "/motos/RT-020/1.jpg", "associacao": "RT-020 — Honda CG 160 Fan preta (Frente)" },
+  { "fotoRecebida": 3, "arquivo": "/motos/RT-020/2.jpg", "associacao": "RT-020 — Honda CG 160 Fan preta (Traseira)" },
+  { "fotoRecebida": 4, "arquivo": "/motos/RT-012/0.jpg", "associacao": "RT-012 — Honda NXR 160 Bros ESDD preta (Lateral)" },
+  { "fotoRecebida": 5, "arquivo": "/motos/RT-012/1.jpg", "associacao": "RT-012 — Honda NXR 160 Bros ESDD preta (Frente)" },
+  { "fotoRecebida": 6, "arquivo": "/motos/RT-012/2.jpg", "associacao": "RT-012 — Honda NXR 160 Bros ESDD preta (Traseira)" },
+  { "fotoRecebida": 7, "arquivo": "/motos/RT-012/3.jpg", "associacao": "RT-012 — Honda NXR 160 Bros ESDD preta (Painel 4.535 km)" },
+  { "fotoRecebida": 8, "arquivo": "/motos/RT-018/0.jpg", "associacao": "RT-018 — Honda CB 300F Twister ABS vermelha (Visão geral)" },
+  { "fotoRecebida": 9, "arquivo": "/motos/RT-018/1.jpg", "associacao": "RT-018 — Honda CB 300F Twister ABS vermelha (Frente)" },
+  { "fotoRecebida": 10, "arquivo": "/motos/RT-018/2.jpg", "associacao": "RT-018 — Honda CB 300F Twister ABS vermelha (Traseira)" },
+  { "fotoRecebida": 11, "arquivo": "/motos/RT-018/3.jpg", "associacao": "RT-018 — Honda CB 300F Twister ABS vermelha (Painel 5.635 km)" },
+  { "fotoRecebida": 12, "arquivo": "/motos/RT-015/0.jpg", "associacao": "RT-015 — BMW G 310 GS Rallye (Visão geral)" },
+  { "fotoRecebida": 13, "arquivo": "/motos/RT-015/1.jpg", "associacao": "RT-015 — BMW G 310 GS Rallye (Frente)" },
+  { "fotoRecebida": 14, "arquivo": "/motos/RT-015/2.jpg", "associacao": "RT-015 — BMW G 310 GS Rallye (Lateral)" },
+  { "fotoRecebida": 15, "arquivo": "/motos/RT-015/3.jpg", "associacao": "RT-015 — BMW G 310 GS Rallye (Traseira)" },
+  { "fotoRecebida": 16, "arquivo": "/motos/RT-015/4.jpg", "associacao": "RT-015 — BMW G 310 GS Rallye (Tanque e quadro)" },
+  { "fotoRecebida": 17, "arquivo": "/motos/RT-015/5.jpg", "associacao": "RT-015 — BMW G 310 GS Rallye (Painel 15.253 km)" },
+  { "fotoRecebida": 18, "arquivo": "/motos/RT-021/0.jpg", "associacao": "RT-021 — Honda CG 160 Fan preta repasse (Visão geral)" },
+  { "fotoRecebida": 19, "arquivo": "/motos/RT-021/1.jpg", "associacao": "RT-021 — Honda CG 160 Fan preta repasse (Frente)" },
+  { "fotoRecebida": 20, "arquivo": "/motos/RT-021/2.jpg", "associacao": "RT-021 — Honda CG 160 Fan preta repasse (Traseira)" },
+  { "fotoRecebida": 21, "arquivo": "/motos/RT-021/3.jpg", "associacao": "RT-021 — Honda CG 160 Fan preta repasse (Guidão e farol)" }
+]
