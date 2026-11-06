@@ -1,0 +1,31 @@
+import { chromium, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import fs from 'node:fs/promises';
+const browser = await chromium.launch(); const context = await browser.newContext({ viewport: { width: 1280, height: 960 }, reducedMotion: 'reduce' }); const p = await context.newPage(); const errors = []; p.on('pageerror', e => errors.push(e.message)); p.on('console', m=>{if(m.type()==='error')errors.push(m.text())});
+try {
+  await p.goto('http://127.0.0.1:3000/admin/entrar'); await p.getByRole('button', { name: 'Entrar no painel (demo)' }).click();
+  await p.goto('http://127.0.0.1:3000/admin/motos'); await p.getByRole('button', { name: 'Editar RT-012 NXR 160 Bros', exact: true }).click();
+  await p.getByRole('button', { name: 'Rascunho', exact: true }).click(); await p.getByRole('button', { name: 'Salvar alterações', exact: true }).click();
+  const publico = await context.newPage(); await publico.goto('http://127.0.0.1:3000/motos/honda-nxr-160-bros-2024-rt-012'); await expect(publico.getByRole('heading', { name: 'Anúncio indisponível' })).toBeVisible();
+  await p.getByRole('button', { name: 'Editar RT-020 CG 160 Fan', exact: true }).click(); await p.getByRole('button', { name: 'Arquivar', exact: true }).last().click();
+  await publico.goto('http://127.0.0.1:3000/motos/honda-cg-160-fan-2022-rt-020'); await expect(publico.getByRole('status').filter({ hasText: 'arquivada' })).toBeVisible();
+  await p.goto('http://127.0.0.1:3000/admin/motos/nova'); await p.getByLabel('Marca', { exact: true }).fill('BMW'); await p.getByLabel('Modelo', { exact: true }).fill('G 310 GS teste'); await p.getByLabel('Cor', { exact: true }).fill('Verde');
+  await expect(p.getByText('Rascunho salvo automaticamente neste navegador.')).toBeVisible(); await p.reload(); await expect(p.getByLabel('Modelo', { exact: true })).toHaveValue('G 310 GS teste');
+  await p.getByRole('button', { name: 'Continuar', exact: true }).click();
+  await p.getByText('Usar fotos fornecidas pela loja', { exact: true }).click(); await p.getByLabel('Conjunto de fotos').selectOption('3'); await p.getByRole('button', { name: 'Adicionar fotos deste conjunto' }).click();
+  await expect(p.locator('.photo-tile')).toHaveCount(6); await p.locator('.photo-tile').nth(2).getByRole('button', { name: 'Usar como capa' }).click(); await expect(p.getByLabel('Legenda da foto').first()).toHaveValue('Lateral');
+  await p.locator('.photo-handle').first().focus(); await p.keyboard.press('Space'); await expect(p.locator('.photo-handle').first()).toHaveAttribute('aria-pressed', 'true'); await p.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))); await p.keyboard.press('ArrowRight'); await expect(p.getByRole('status').filter({hasText:'posição 2 de 6'})).toBeAttached(); await p.keyboard.press('Space');
+  await expect(p.getByLabel('Legenda da foto').first()).toHaveValue('Visão geral');
+  await p.getByRole('button', { name: 'Criar ponto no centro' }).click(); await p.getByLabel('Título do ponto').fill('Revisão de exemplo');
+  await p.getByRole('button', { name: 'Editar ponto Revisão de exemplo' }).focus(); await p.keyboard.press('ArrowRight');
+  await p.getByRole('button', { name: 'Continuar', exact: true }).click(); await p.getByLabel('Descrição do anúncio').fill('Cadastro de exemplo com fotos fornecidas pela loja.'); await p.getByRole('button', { name: 'Salvar rascunho', exact: true }).click();
+  await p.getByRole('button', { name: 'Editar RT-023 G 310 GS teste', exact: true }).click(); await p.getByRole('link', { name: 'Editar completo', exact: true }).click();
+  await p.getByRole('button', { name: 'Continuar', exact: true }).click(); await expect(p.locator('.photo-tile')).toHaveCount(6); await expect(p.getByRole('button', { name: 'Editar ponto Revisão de exemplo' })).toBeVisible();
+  const axe = await new AxeBuilder({ page: p }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze(); await fs.writeFile('test-results/axe-editor.json', JSON.stringify(axe.violations, null, 2)); expect(axe.violations).toEqual([]);
+  await p.getByRole('button', { name: 'Restaurar dados de exemplo', exact: true }).click(); await p.getByRole('button', { name: 'Restaurar dados', exact: true }).click();
+  await expect(p.getByRole('heading', { name: 'Moto não encontrada' })).toBeVisible();
+  await p.goto('http://127.0.0.1:3000/admin/motos/nova'); await expect(p.getByLabel('Marca', { exact: true })).toHaveValue('');
+  await p.goto('http://127.0.0.1:3000/?busca=nenhuma'); await expect(p.getByRole('heading', { name: 'Nenhuma moto com esses filtros.' })).toBeVisible(); await p.getByRole('button', { name: 'Limpar filtros', exact: true }).click(); await expect(p.getByRole('textbox', { name: 'Buscar motos' })).toHaveValue('');
+  await p.getByRole('textbox', { name: 'Buscar motos' }).fill('Fan'); await expect(p.locator('.moto-card')).toHaveCount(2); await expect(p.getByRole('textbox', { name: 'Buscar motos' })).toBeFocused();
+  expect(errors).toEqual([]); await fs.writeFile('test-results/workflows.json', JSON.stringify({ ok: true, checks: ['rascunho indisponível no público', 'arquivada em link direto', 'recuperar cadastro incompleto após reload', 'biblioteca real de fotos', 'escolher capa e reordenar com teclado', 'editar hotspot pelo teclado', 'rascunho persistido com fotos e pontos', 'axe no editor', 'restaurar limpa editor e rascunhos', 'limpar filtros e foco da busca preservado'] }, null, 2)); console.log('Fluxos adicionais e editor: passaram.');
+} catch(e) { console.error('Falha:', p.url(), errors); await p.screenshot({ path: 'test-results/falha-editor.png', fullPage: true }); throw e; } finally { await context.close(); await browser.close(); }
