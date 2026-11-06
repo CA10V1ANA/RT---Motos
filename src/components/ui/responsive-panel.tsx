@@ -1,19 +1,26 @@
 "use client";
-import { useState, useSyncExternalStore } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Drawer } from "vaul";
 import { X } from "lucide-react";
 import { Button } from "./button";
 import { useDialogFocus } from "./use-dialog-focus";
-const subscribe = (callback: () => void) => {
-  const media = matchMedia("(max-width: 767px)");
-  media.addEventListener("change", callback);
-  return () => media.removeEventListener("change", callback);
-};
-export function useMobile() {
+/** Celulares (abaixo de 768px). */
+export const MOBILE_QUERY = "(max-width: 767px)";
+/** Celulares e tablets (abaixo de 1024px). */
+export const TABLET_DOWN_QUERY = "(max-width: 1023px)";
+export function useMobile(query: string = MOBILE_QUERY) {
+  const subscribe = useCallback(
+    (callback: () => void) => {
+      const media = matchMedia(query);
+      media.addEventListener("change", callback);
+      return () => media.removeEventListener("change", callback);
+    },
+    [query],
+  );
   return useSyncExternalStore(
     subscribe,
-    () => matchMedia("(max-width: 767px)").matches,
+    () => matchMedia(query).matches,
     () => false,
   );
 }
@@ -34,34 +41,35 @@ export function ResponsivePanel({
 }) {
   const mobile = useMobile();
   const focus = useDialogFocus();
-  const [snap, setSnap] = useState<number | string | null>(0.95);
   if (mobile)
     return (
-      <Drawer.Root
-        open={open}
-        onOpenChange={onOpenChange}
-        snapPoints={[0.55, 0.95]}
-        activeSnapPoint={snap}
-        setActiveSnapPoint={setSnap}
-      >
+      // Sem snap points: com eles o vaul trava a rolagem do conteúdo até o
+      // painel estar 100% aberto, o que impedia descer no celular.
+      <Drawer.Root open={open} onOpenChange={onOpenChange}>
         <Drawer.Portal>
           <Drawer.Overlay className="dialog-overlay" />
           <Drawer.Content className="drawer-content" {...focus}>
-            <div className="drawer-handle" />
-            <div className="flex justify-between items-start gap-4">
-              <Drawer.Title className="text-2xl font-display font-bold">
-                {title}
-              </Drawer.Title>
-              <Drawer.Close asChild>
-                <Button variant="ghost" aria-label="Fechar" className="px-3">
-                  <X size={20} />
-                </Button>
-              </Drawer.Close>
+            {/* Cabeçalho fixo: é por aqui que o usuário arrasta para fechar. */}
+            <div className="drawer-header">
+              <div className="drawer-handle" />
+              <div className="flex justify-between items-start gap-4">
+                <Drawer.Title className="text-2xl font-display font-bold">
+                  {title}
+                </Drawer.Title>
+                <Drawer.Close asChild>
+                  <Button variant="ghost" aria-label="Fechar" className="px-3">
+                    <X size={20} />
+                  </Button>
+                </Drawer.Close>
+              </div>
+              <Drawer.Description className="text-sm text-muted mt-2">
+                {description ?? "Explore as opções abaixo."}
+              </Drawer.Description>
             </div>
-            <Drawer.Description className="text-sm text-muted mt-2 mb-5">
-              {description ?? "Explore as opções abaixo."}
-            </Drawer.Description>
-            {children}
+            {/* Corpo rolável: data-vaul-no-drag libera a rolagem nativa. */}
+            <div className="drawer-body" data-vaul-no-drag>
+              {children}
+            </div>
           </Drawer.Content>
         </Drawer.Portal>
       </Drawer.Root>
