@@ -133,7 +133,7 @@ export function PhotoSorter({
     }
   }
   return (
-    <section>
+    <section className="min-w-0 max-w-full">
       {upload && (
         <div
           className="upload-zone"
