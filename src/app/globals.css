@@ -40,7 +40,7 @@ h1,h2,h3 { font-family:var(--font-chakra),sans-serif; text-wrap:balance; }
 .brand { display:inline-flex; align-items:center; gap:8px; } .brand>span:first-child { font-family:var(--font-chakra); font-weight:700; font-size:40px; font-style:italic; letter-spacing:-5px; padding-right:6px; } .brand-t { color:var(--red); -webkit-text-fill-color:var(--red); } .brand-name { font-family:var(--font-chakra); font-weight:700; font-style:italic; font-size:18px; letter-spacing:.04em; }
 .site-header { position:relative; z-index:1; border-bottom:1px solid var(--border); background:#141418b8; backdrop-filter:blur(16px) saturate(140%); }
 .eyebrow { font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--text-muted); }
-.hero { display:grid; gap:32px; padding-block:48px; align-items:center; }
+.hero { display:grid; grid-template-columns:minmax(0,1fr); gap:32px; padding-block:48px; align-items:center; }
 .hero h1 { font-size:36px; line-height:1.07; font-weight:700; letter-spacing:-.035em; margin:20px 0; }
 .hero-media { position:relative; min-width:0; background:radial-gradient(60% 50% at 70% 60%,#dc262647,transparent 70%); }
 .hero-picture { position:relative; height:430px; overflow:hidden; border-radius:16px; border:1px solid var(--border-strong); }
@@ -53,7 +53,7 @@ h1,h2,h3 { font-family:var(--font-chakra),sans-serif; text-wrap:balance; }
 .skip-link { position:fixed; z-index:100; top:-100px; padding:12px; background:var(--surface); } .skip-link:focus { top:4px; }
 [id] { scroll-margin-top:110px; }
 @media(min-width:640px) { .restore-button span { display:inline; } .hero-picture { height:520px; } }
-@media(min-width:1024px) { body { font-size:16px; } .container-shell { padding-inline:32px; } .hero { grid-template-columns:1fr 1fr; gap:64px; padding-block:64px; } .hero h1 { font-size:64px; } .hero-picture { height:600px; } }
+@media(min-width:1024px) { body { font-size:16px; } .container-shell { padding-inline:32px; } .hero { grid-template-columns:repeat(2,minmax(0,1fr)); gap:64px; padding-block:64px; } .hero h1 { font-size:64px; } .hero-picture { height:600px; } }
 @media(max-width:767px) { input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea { font-size:16px!important; } }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition-duration:150ms!important; scroll-behavior:auto!important; } .spotlight { transform:none!important; } .border-beam { display:none; } }
 

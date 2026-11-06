@@ -48,7 +48,7 @@ export function Gallery({
     setPoint(id);
   }
   return (
-    <div>
+    <div className="min-w-0 max-w-full">
       <div className="flex items-center justify-between gap-3 mb-4">
         <div className="segments">
           <button aria-pressed={!raiox} onClick={() => setRaiox(false)}>
