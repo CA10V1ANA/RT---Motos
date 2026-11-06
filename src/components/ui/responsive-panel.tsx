@@ -57,7 +57,13 @@ export function ResponsivePanel({
                   {title}
                 </Drawer.Title>
                 <Drawer.Close asChild>
-                  <Button variant="ghost" aria-label="Fechar" className="px-3">
+                  <Button
+                    variant="ghost"
+                    aria-label="Fechar"
+                    className="px-3"
+                    data-vaul-no-drag
+                    onPointerDown={(e) => e.stopPropagation()}
+                  >
                     <X size={20} />
                   </Button>
                 </Drawer.Close>
@@ -66,8 +72,14 @@ export function ResponsivePanel({
                 {description ?? "Explore as opções abaixo."}
               </Drawer.Description>
             </div>
-            {/* Corpo rolável: data-vaul-no-drag libera a rolagem nativa. */}
-            <div className="drawer-body" data-vaul-no-drag>
+            {/* Corpo rolável: data-vaul-no-drag e stopPropagation impedem o vaul
+                de capturar ponteiros em rolagens horizontais, sliders e drag-and-drop. */}
+            <div
+              className="drawer-body"
+              data-vaul-no-drag
+              onPointerDown={(e) => e.stopPropagation()}
+              onPointerMove={(e) => e.stopPropagation()}
+            >
               {children}
             </div>
           </Drawer.Content>
